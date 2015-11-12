@@ -1,126 +1,104 @@
 'use strict';
 
-// Simple pure-React component so we don't have to remember
-// Bootstrap's classes
-var BootstrapButton = React.createClass({
-  render: function() {
-    return (
-      <a {...this.props}
-        href="javascript:;"
-        role="button"
-        className={(this.props.className || '') + ' btn'} />
-    );
-  }
+var data = [
+  	{ author: "Pete Hunt", text: "This is one comment" },
+  	{ author: "Jordan Walke", text: "This is *another* comment" }
+];
+
+// Comment box
+var CommentBox = React.createClass({
+
+  	loadCommentsFromServer: function() {
+  	  	$.ajax({
+  	  	  	url: this.props.url,
+  	  	  	dataType: 'json',
+  	  	  	cache: false,
+
+  	  	  	success: function( data ) {
+  	  	  	  	this.setState({ data: data });
+  	  	  	}.bind(this),
+  	  	  	
+  	  	  	error: function( xhr, status, err ) {
+  	  	  	  	console.error(this.props.url, status, err.toString());
+  	  	  	}.bind(this)
+  	  	});
+  	},
+
+  	getInitialState: function() {
+  	  	return {data: []};
+  	},
+
+  	componentDidMount: function() {
+  	  	this.loadCommentsFromServer();
+    	setInterval( this.loadCommentsFromServer, this.props.pollInterval );
+  	},
+
+	render: function() {
+		return (
+			<div className="commentBox">
+				<h1>Comments</h1>
+		        <CommentList data={this.state.data}/>
+		        <CommentForm />
+			</div>
+		);
+	}
 });
 
-var BootstrapModal = React.createClass({
-  // The following two methods are the only places we need to
-  // integrate Bootstrap or jQuery with the components lifecycle methods.
-  componentDidMount: function() {
-    // When the component is added, turn it into a modal
-    $(this.refs.root).modal({backdrop: 'static', keyboard: false, show: false});
-  },
-  componentWillUnmount: function() {
-    $(this.refs.root).off('hidden', this.handleHidden);
-  },
-  close: function() {
-    $(this.refs.root).modal('hide');
-  },
-  open: function() {
-    $(this.refs.root).modal('show');
-  },
-  render: function() {
-    var confirmButton = null;
-    var cancelButton = null;
+// Comment list
+var CommentList = React.createClass({
 
-    if (this.props.confirm) {
-      confirmButton = (
-        <BootstrapButton
-          onClick={this.handleConfirm}
-          className="btn-primary">
-          {this.props.confirm}
-        </BootstrapButton>
-      );
-    }
-    if (this.props.cancel) {
-      cancelButton = (
-        <BootstrapButton onClick={this.handleCancel} className="btn-default">
-          {this.props.cancel}
-        </BootstrapButton>
-      );
-    }
+  	render: function() {
+  		var commentNodes = this.props.data.map( function ( comment ) {
+	      	return (
+	      	  	<Comment key={comment.id} author={comment.author}>
+	      	  	  	{comment.comment}
+	      	  	</Comment>
+	      	);
+	    });
 
-    return (
-      <div className="modal fade" ref="root">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <button
-                type="button"
-                className="close"
-                onClick={this.handleCancel}>
-                &times;
-              </button>
-              <h3>{this.props.title}</h3>
-            </div>
-            <div className="modal-body">
-              {this.props.children}
-            </div>
-            <div className="modal-footer">
-              {cancelButton}
-              {confirmButton}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  },
-  handleCancel: function() {
-    if (this.props.onCancel) {
-      this.props.onCancel();
-    }
-  },
-  handleConfirm: function() {
-    if (this.props.onConfirm) {
-      this.props.onConfirm();
-    }
-  }
+  	  	return (
+  	  	  	<div className="commentList">
+  	  	  	  	{commentNodes}
+  	  	  	</div>
+  	  	);
+  	}
 });
 
-var Example = React.createClass({
-  handleCancel: function() {
-    if (confirm('Are you sure you want to cancel?')) {
-      this.refs.modal.close();
-    }
-  },
-  render: function() {
-    var modal = null;
-    modal = (
-      <BootstrapModal
-        ref="modal"
-        confirm="OK"
-        cancel="Cancel"
-        onCancel={this.handleCancel}
-        onConfirm={this.closeModal}
-        title="Hello, Bootstrap!">
-          This is a React component powered by jQuery and Bootstrap!
-      </BootstrapModal>
-    );
-    return (
-      <div className="example">
-        {modal}
-        <BootstrapButton onClick={this.openModal} className="btn-default">
-          Open modal
-        </BootstrapButton>
-      </div>
-    );
-  },
-  openModal: function() {
-    this.refs.modal.open();
-  },
-  closeModal: function() {
-    this.refs.modal.close();
-  }
+// Comment form
+var CommentForm = React.createClass({
+  	render: function() {
+  	  	return (
+  	  	  	<div className="commentForm">
+  	  	  	  	<form className="commentForm">
+			        <input type="text" placeholder="Your name" />
+			        <input type="text" placeholder="Say something..." />
+			        <input type="submit" value="Post" />
+			    </form>
+  	  	  	</div>
+  	  	);
+  	}
 });
 
-ReactDOM.render(<Example />, document.getElementById('jqueryexample'));
+// Comment
+var Comment = React.createClass({
+	rawMarkup: function () {
+		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    	return { __html: rawMarkup };
+	},
+
+  	render: function() {
+  	  	return (
+  	  	  	<div className="comment">
+  	  	    	<h2 className="commentAuthor">
+  	  	      		{this.props.author}
+  	  	    	</h2>
+  	  	    	<span dangerouslySetInnerHTML={this.rawMarkup()} />
+  	  	  	</div>
+  	  	);
+  	}
+});
+
+ReactDOM.render(
+	<CommentBox url="http://infinity.app/api/comments" pollInterval={20000}/>,
+	document.getElementById( 'content' )
+);
