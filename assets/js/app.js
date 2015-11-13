@@ -1,104 +1,37 @@
 'use strict';
 
-var data = [
-  	{ author: "Pete Hunt", text: "This is one comment" },
-  	{ author: "Jordan Walke", text: "This is *another* comment" }
-];
+// var API_LAST_KEY = "a8da4176b3e227778d267fdc4df7ab36";
+// var API_LAST_URL = "http://ws.audioscrobbler.com/2.0/?";
 
-// Comment box
-var CommentBox = React.createClass({
+var SearchBox = React.createClass({
 
-  	loadCommentsFromServer: function() {
-  	  	$.ajax({
-  	  	  	url: this.props.url,
-  	  	  	dataType: 'json',
-  	  	  	cache: false,
+	getInitialState: function () {
+		return {
+			API_LAST_KEY: "a8da4176b3e227778d267fdc4df7ab36",
+			API_LAST_URL: "http://ws.audioscrobbler.com/2.0/?"
+		};
+	},
 
-  	  	  	success: function( data ) {
-  	  	  	  	this.setState({ data: data });
-  	  	  	}.bind(this),
-  	  	  	
-  	  	  	error: function( xhr, status, err ) {
-  	  	  	  	console.error(this.props.url, status, err.toString());
-  	  	  	}.bind(this)
-  	  	});
-  	},
+	search: function ( e ) {
+		e.preventDefault();
+		console.log( 'form sended', this.props.API_LAST_URL );
+	},
 
-  	getInitialState: function() {
-  	  	return {data: []};
-  	},
-
-  	componentDidMount: function() {
-  	  	this.loadCommentsFromServer();
-    	setInterval( this.loadCommentsFromServer, this.props.pollInterval );
-  	},
-
-	render: function() {
+	render: function () {
 		return (
-			<div className="commentBox">
-				<h1>Comments</h1>
-		        <CommentList data={this.state.data}/>
-		        <CommentForm />
+			<div className="searchBox">
+				<form action="#" className="form-inline" onSubmit={this.search}>
+					<div className="form-group">
+						<input type="text" className="form-control" placeholder="Your name" ref="author" />
+						<button type="submit" className="btn btn-success input-group">Buscar</button>
+					</div>
+				</form>
 			</div>
 		);
 	}
 });
 
-// Comment list
-var CommentList = React.createClass({
-
-  	render: function() {
-  		var commentNodes = this.props.data.map( function ( comment ) {
-	      	return (
-	      	  	<Comment key={comment.id} author={comment.author}>
-	      	  	  	{comment.comment}
-	      	  	</Comment>
-	      	);
-	    });
-
-  	  	return (
-  	  	  	<div className="commentList">
-  	  	  	  	{commentNodes}
-  	  	  	</div>
-  	  	);
-  	}
-});
-
-// Comment form
-var CommentForm = React.createClass({
-  	render: function() {
-  	  	return (
-  	  	  	<div className="commentForm">
-  	  	  	  	<form className="commentForm">
-			        <input type="text" placeholder="Your name" />
-			        <input type="text" placeholder="Say something..." />
-			        <input type="submit" value="Post" />
-			    </form>
-  	  	  	</div>
-  	  	);
-  	}
-});
-
-// Comment
-var Comment = React.createClass({
-	rawMarkup: function () {
-		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-    	return { __html: rawMarkup };
-	},
-
-  	render: function() {
-  	  	return (
-  	  	  	<div className="comment">
-  	  	    	<h2 className="commentAuthor">
-  	  	      		{this.props.author}
-  	  	    	</h2>
-  	  	    	<span dangerouslySetInnerHTML={this.rawMarkup()} />
-  	  	  	</div>
-  	  	);
-  	}
-});
-
 ReactDOM.render(
-	<CommentBox url="http://infinity.app/api/comments" pollInterval={20000}/>,
-	document.getElementById( 'content' )
+  	<SearchBox/>,
+  	document.getElementById( 'content' )
 );
