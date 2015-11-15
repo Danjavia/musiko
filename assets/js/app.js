@@ -13,7 +13,7 @@ routie({
         );
     },
 
-    '/artist/:artistName': function( artistName ) {
+    '/search/:artistName': function( artistName ) {
     	console.log( artistName );
 
         // render the first page on a direct access

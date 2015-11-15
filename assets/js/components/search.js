@@ -52,15 +52,29 @@ var SearchBox = React.createClass({
 
 	render: function () {
 		return (
-			<div className="searchBox">
-				<form action="#" className="form-inline" onSubmit={this.search}>
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Your name" ref="search" />
-						<button type="submit" className="btn btn-success input-group">Buscar</button>
+			<section className="app-container">
+
+				<div className="searchBox container">
+
+					<section className="searchBox__header">
+						<h1>Musiko</h1>
+						<h3>The cool way for listen music</h3>
+					</section>
+
+					<div className="col-md-offset-3 col-md-6 col-xs-12 col-lg-6 searchBox__form">	
+						<form action="#" className="form-inline" onSubmit={this.search}>
+							<div className="form-group search-form">
+								<input type="text" className="form-control" placeholder="Your name" ref="search" />
+								<button type="submit" className="btn btn-warning input-group">Buscar</button>
+							</div>
+						</form>
 					</div>
-				</form>
+
+				</div>
+				
 				<ListResults data={this.state.results}/>
-			</div>
+
+			</section>
 		);
 	}
 });
@@ -71,11 +85,11 @@ var Result = React.createClass({
 	render: function () {
 
 		var thumbnail = this.props.queryData.image[ 2 ][ '#text' ] ? this.props.queryData.image[ 2 ][ '#text' ] : 'http://img2-ak.lst.fm/i/u/174s/449d1de5b35c6beaadcfa8dfb565214a.png',
-			url = '/#/artist/' + encodeURIComponent( this.props.queryData.artist );
+			url = '/#/search/' + encodeURIComponent( this.props.queryData.artist );
 
       	return (
       	  	<div className="result-item">
-      	  		<h2>{this.props.queryData.name}</h2>
+      	  		<h4><a href={url}>{this.props.queryData.name}</a></h4>
       	  		<a href={url}><img src={thumbnail} alt="placeholder+image"/></a>
       	  	  	<strong>Listeners:</strong> {this.props.queryData.listeners}
       	  	</div>
@@ -113,7 +127,7 @@ var ListResults = React.createClass({
 		}
 
 		return (
-	      	<div className="results">
+	      	<div className="results container">
 	    		{searchResults}
 	      	</div>
 	    );
