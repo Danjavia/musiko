@@ -39,6 +39,32 @@
 		}
 	}
 
+	&__stats {
+		position: relative;
+		color: @light;
+		margin-bottom: 30px;
+		z-index: 1;
+
+		&--listeners {
+			display: inline-block;
+			vertical-align: top;
+			zoom: 1; /* Fix for IE7 */
+			*display: inline; /* Fix for IE7 */
+			border-right: 1px solid @light;
+			padding: 10px;
+			text-align: right;
+		}
+
+		&--playcount {
+			display: inline-block;
+			vertical-align: top;
+			zoom: 1; /* Fix for IE7 */
+			*display: inline; /* Fix for IE7 */			
+			padding: 10px;
+			text-align: left;
+		}
+	}
+
 	&__bio {
 		background: @light;
 		.box-sizing( border-box );
