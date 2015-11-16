@@ -64,7 +64,7 @@ var SearchBox = React.createClass({
 					<div className="col-md-offset-3 col-md-6 col-xs-12 col-lg-6 searchBox__form">	
 						<form action="#" className="form-inline" onSubmit={this.search}>
 							<div className="form-group search-form">
-								<input type="text" className="form-control" placeholder="Your name" ref="search" />
+								<input type="text" className="form-control" placeholder="Search song or artist" ref="search" />
 								<button type="submit" className="btn btn-warning input-group">Buscar</button>
 							</div>
 						</form>
@@ -86,13 +86,18 @@ var Result = React.createClass({
 
 		var thumbnail = this.props.queryData.image[ 2 ][ '#text' ] ? this.props.queryData.image[ 2 ][ '#text' ] : 'http://img2-ak.lst.fm/i/u/174s/449d1de5b35c6beaadcfa8dfb565214a.png',
 			url = '/#/artist/' + encodeURIComponent( this.props.queryData.artist ),
-			songUrl = '/#/song/' + encodeURIComponent( this.props.queryData.name );
+			songUrl = '/#/track/' + encodeURIComponent( this.props.queryData.name ) + '/artist/' + encodeURIComponent( this.props.queryData.artist );
 
       	return (
-      	  	<div className="result-item">
-      	  		<h4><a href={songUrl}>{this.props.queryData.name}</a></h4>
-      	  		<a href={url}><img src={thumbnail} alt="placeholder+image"/></a>
-      	  	  	<strong>Listeners:</strong> {this.props.queryData.listeners}
+      	  	<div className="result-item col-md-3">
+      	  		<article className="card">
+      	  			<a href={url}><img src={thumbnail} className="card-img-top" alt="placeholder+image"/></a>
+	      	  		<div className="card-block">
+		      	  		<strong className="card-title"><a href={songUrl}>{this.props.queryData.name}</a></strong>
+		      	  	  	<p className="card-text"><strong>Listeners:</strong> {this.props.queryData.listeners}</p>
+		      	  	  	<a href={url} className="btn btn-warning">Show artist profile</a>
+	      	  	  	</div>
+      	  		</article>
       	  	</div>
       	);
 	} 
@@ -121,17 +126,24 @@ var ListResults = React.createClass({
 		      	  	<Result queryData={result} key={i}/>
 		      	);
 		    });
+
+		    return (
+		      	<div className="results container">
+		    		{searchResults}
+		      	</div>
+		    );
 		}
 
 		else {
-			var searchResults = 'no results here';
+			var searchResults = '';
+			
+			return (
+		      	<div className="container">
+		    		{searchResults}
+		      	</div>
+		    );
 		}
 
-		return (
-	      	<div className="results container">
-	    		{searchResults}
-	      	</div>
-	    );
 
 	} 
 });

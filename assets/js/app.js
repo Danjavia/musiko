@@ -22,12 +22,12 @@ routie({
         );
     },
 
-    '/song/:song': function( song ) {
-    	console.log( song );
+    '/track/:track/artist/:artist': function( track, artist ) {
+    	console.log( track, artist );
 
         // render the first page on a direct access
         ReactDOM.render(
-            <Song apiUrl={API_LAST_URL} apiKey={API_LAST_KEY} song={song}/>,
+            <Track apiUrl={API_LAST_URL} apiKey={API_LAST_KEY} track={track} artist={artist}/>,
             document.getElementById( 'content' )
         );
     },
