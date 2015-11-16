@@ -85,11 +85,12 @@ var Result = React.createClass({
 	render: function () {
 
 		var thumbnail = this.props.queryData.image[ 2 ][ '#text' ] ? this.props.queryData.image[ 2 ][ '#text' ] : 'http://img2-ak.lst.fm/i/u/174s/449d1de5b35c6beaadcfa8dfb565214a.png',
-			url = '/#/search/' + encodeURIComponent( this.props.queryData.artist );
+			url = '/#/artist/' + encodeURIComponent( this.props.queryData.artist ),
+			songUrl = '/#/song/' + encodeURIComponent( this.props.queryData.name );
 
       	return (
       	  	<div className="result-item">
-      	  		<h4><a href={url}>{this.props.queryData.name}</a></h4>
+      	  		<h4><a href={songUrl}>{this.props.queryData.name}</a></h4>
       	  		<a href={url}><img src={thumbnail} alt="placeholder+image"/></a>
       	  	  	<strong>Listeners:</strong> {this.props.queryData.listeners}
       	  	</div>

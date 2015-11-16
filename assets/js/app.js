@@ -13,12 +13,21 @@ routie({
         );
     },
 
-    '/search/:artistName': function( artistName ) {
-    	console.log( artistName );
+    '/artist/:artistName': function( artistName ) {
 
         // render the first page on a direct access
         ReactDOM.render(
             <Artist apiUrl={API_LAST_URL} apiKey={API_LAST_KEY} artist={artistName}/>,
+            document.getElementById( 'content' )
+        );
+    },
+
+    '/song/:song': function( song ) {
+    	console.log( song );
+
+        // render the first page on a direct access
+        ReactDOM.render(
+            <Song apiUrl={API_LAST_URL} apiKey={API_LAST_KEY} song={song}/>,
             document.getElementById( 'content' )
         );
     },
