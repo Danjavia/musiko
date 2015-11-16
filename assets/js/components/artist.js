@@ -84,8 +84,8 @@ var Artist = React.createClass({
 						<img src={thumbnail} alt="placeholder+image"/>
 						<h1>{this.state.name}</h1>
 						<div className="artist__stats">
-							<div className="artist__stats--listeners">listeners <br/> {this.state.listeners}</div>
-							<div className="artist__stats--playcount">playcount <br/> {this.state.playcount}</div>
+							<div className="artist__stats--listeners">listeners<br/>{this.state.listeners}</div>
+							<div className="artist__stats--playcount">playcount<br/>{this.state.playcount}</div>
 						</div>
 					</div>
 				</header>
