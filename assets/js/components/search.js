@@ -36,7 +36,7 @@ var SearchBox = React.createClass({
       		data: queryData,
 
       		success: function( data ) {
-      			console.log( data );
+      			console.log( data, data.results.trackmatches.track.lenght );
       		  	this.setState({ results: data.results.trackmatches.track });
       		  	console.log( this.state.results );
       		}.bind( this ),
@@ -93,7 +93,7 @@ var Result = React.createClass({
       	  		<article className="card">
       	  			<a href={url}><img src={thumbnail} className="card-img-top" alt="placeholder+image"/></a>
 	      	  		<div className="card-block">
-		      	  		<strong className="card-title"><a href={songUrl}>{this.props.queryData.name}</a></strong>
+		      	  		<strong className="card-title"><strong>Song: </strong><a href={songUrl}>{this.props.queryData.name}</a></strong>
 		      	  	  	<p className="card-text"><strong>Listeners:</strong> {this.props.queryData.listeners}</p>
 		      	  	  	<a href={url} className="btn btn-warning">Show artist profile</a>
 	      	  	  	</div>

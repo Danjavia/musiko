@@ -39,6 +39,7 @@ var Artist = React.createClass({
 
       			if ( this.isMounted() ) {
 			        this.setState({ 
+				    	mbid: data.artist.mbid,
 			        	bio: data.artist.bio,
 				    	image: data.artist.image[ 2 ][ '#text' ],
 				    	bgImage: data.artist.image[ 4 ][ '#text' ],
@@ -63,6 +64,30 @@ var Artist = React.createClass({
 
 	rawMarkup: function() {
 	    return { __html: this.state.bio.content };
+	},
+
+	saveTo: function ( mbid ) {
+
+		var mbid, favoriteArtists = [];
+
+		return function ( e ) {
+
+			if ( localStorage.favoriteArtists ) {
+
+				favoriteArtists = JSON.parse( localStorage.favoriteArtists );
+
+				if ( favoriteArtists.indexOf( mbid ) != -1 ) return;
+				
+				else 
+					favoriteArtists.push( mbid );
+			}
+
+			else
+				favoriteArtists.push( mbid );
+
+	    	localStorage.favoriteArtists = JSON.stringify( favoriteArtists );
+
+	    }.bind( this );
 	},
 	
 	render: function () {
@@ -95,6 +120,12 @@ var Artist = React.createClass({
 						<h2>Biography</h2>
 						<p dangerouslySetInnerHTML={this.rawMarkup()}/>
 					</div>
+				</section>
+				<div className="clearfix"></div>
+
+					
+				<section className="artist__actions">
+					<a className="artist__actions--save" data-mbid={this.state.mbid} onClick={this.saveTo(this.state.mbid)}><i className="fa fa-heart"></i> save to my favorite artists</a>
 				</section>
 			</div>
 		)

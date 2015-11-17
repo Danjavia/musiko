@@ -1,4 +1,5 @@
 .artist {
+	background: @light;
 	
 	&__header {
 		position: relative;
@@ -69,7 +70,7 @@
 	&__bio {
 		background: @light;
 		.box-sizing( border-box );
-		padding: 70px 0;
+		padding: 50px 20px 30px;
 		font-family: @contentFont;
 
 		h2 {
@@ -81,6 +82,49 @@
 		p {
 			margin: 30px 0;
 			font-size: 18px;
+		}
+	}
+
+	&__similar {
+		background: @light;
+		.box-sizing( border-box );
+		padding: 70px 20px;
+		font-family: @contentFont;
+
+		h2 {
+			font-family: @titleFont;
+			font-size: 40px;
+			text-align: center;
+		}
+
+		p {
+			margin: 30px 0;
+			font-size: 18px;
+		}
+	}
+
+	&__actions {
+		display: block;
+		text-align: center;
+		padding: 5px 0;
+		min-height: 100px;
+
+		&--save {
+			color: @dark;
+			background: @light;
+			border: 2px solid @dark;
+			font-size: 20px;
+			padding: 20px;
+			.transition( all 400ms ease-out );
+			cursor: pointer;
+
+			&:active,
+			&:hover {
+				color: @light;
+				background: @dark;
+				.transition( all 400ms ease-out );
+				text-decoration: none;
+			}
 		}
 	}
 
