@@ -25,7 +25,7 @@ var Track = React.createClass({
 			format: 'json'
 		};
 
-		console.log( queryData );
+		
 
 		$.ajax({
 
@@ -35,7 +35,7 @@ var Track = React.createClass({
       		data: queryData,
 
       		success: function( data ) {
-      			console.log( data );
+      			
 
       			if ( this.isMounted() ) {
 			        this.setState({ 
@@ -46,12 +46,12 @@ var Track = React.createClass({
 			        });
 			    }
       		  	
-      		  	console.log( this.state.albumTitle );
+      		  	
       		}.bind( this ),
 
       		error: function( xhr, status, err ) {
-      			console.log( status );
-      		  	console.error( this.props.url, status, err.toString() );
+      			
+      		  	
       		}.bind( this )
     	});
 	},

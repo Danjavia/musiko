@@ -25,7 +25,7 @@ var Artist = React.createClass({
 			format: 'json'
 		};
 
-		console.log( queryData );
+		
 
 		$.ajax({
 
@@ -35,7 +35,7 @@ var Artist = React.createClass({
       		data: queryData,
 
       		success: function( data ) {
-      			console.log( data );
+      			
 
       			if ( this.isMounted() ) {
 			        this.setState({ 
@@ -52,12 +52,12 @@ var Artist = React.createClass({
 			        });
 			    }
       		  	
-      		  	console.log( this.state.bio );
+      		  	
       		}.bind( this ),
 
       		error: function( xhr, status, err ) {
-      			console.log( status );
-      		  	console.error( this.props.url, status, err.toString() );
+      			
+      		  	
       		}.bind( this )
     	});
 	},
@@ -66,9 +66,9 @@ var Artist = React.createClass({
 	    return { __html: this.state.bio.content };
 	},
 
-	saveTo: function ( mbid ) {
+	saveTo: function ( name ) {
 
-		var mbid, favoriteArtists = [];
+		var name, favoriteArtists = [];
 
 		return function ( e ) {
 
@@ -76,18 +76,32 @@ var Artist = React.createClass({
 
 				favoriteArtists = JSON.parse( localStorage.favoriteArtists );
 
-				if ( favoriteArtists.indexOf( mbid ) != -1 ) return;
+				if ( favoriteArtists.indexOf( name ) != -1 ) return;
 				
 				else 
-					favoriteArtists.push( mbid );
+					favoriteArtists.push( name );
 			}
 
 			else
-				favoriteArtists.push( mbid );
+				favoriteArtists.push( name );
 
 	    	localStorage.favoriteArtists = JSON.stringify( favoriteArtists );
 
 	    }.bind( this );
+	},
+
+	listAll: function () {
+
+		var favoriteArtists;
+
+		if ( localStorage.favoriteArtists ) {
+
+			favoriteArtists = JSON.parse( localStorage.favoriteArtists );
+			alert( favoriteArtists );
+		}
+
+		else
+			alert( 'Sorry, You has not any artist in your favorite artist list' );
 	},
 	
 	render: function () {
@@ -121,11 +135,12 @@ var Artist = React.createClass({
 						<p dangerouslySetInnerHTML={this.rawMarkup()}/>
 					</div>
 				</section>
+
 				<div className="clearfix"></div>
 
-					
 				<section className="artist__actions">
-					<a className="artist__actions--save" data-mbid={this.state.mbid} onClick={this.saveTo(this.state.mbid)}><i className="fa fa-heart"></i> save to my favorite artists</a>
+					<a className="artist__actions--save" data-name={this.state.name} onClick={this.saveTo(this.state.name)}><i className="fa fa-heart"></i> save to my favorite artists</a>
+					<a className="artist__actions--show" onClick={this.listAll}><i className="fa fa-list"></i> List all my favorite artists</a>
 				</section>
 			</div>
 		)

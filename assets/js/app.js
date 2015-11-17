@@ -6,6 +6,7 @@ var API_LAST_URL = "http://ws.audioscrobbler.com/2.0/",
 routie({
 
 	'': function() {
+        
         // render the first page on a direct access
         ReactDOM.render(
             <Musiko apiUrl={API_LAST_URL} apiKey={API_LAST_KEY}/>,
@@ -23,7 +24,6 @@ routie({
     },
 
     '/track/:track/artist/:artist': function( track, artist ) {
-    	console.log( track, artist );
 
         // render the first page on a direct access
         ReactDOM.render(

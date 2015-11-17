@@ -26,7 +26,7 @@ var SearchBox = React.createClass({
 			format: 'json'
 		};
 
-		console.log( queryData );
+		
 
 		$.ajax({
 
@@ -36,18 +36,18 @@ var SearchBox = React.createClass({
       		data: queryData,
 
       		success: function( data ) {
-      			console.log( data, data.results.trackmatches.track.lenght );
+      			
       		  	this.setState({ results: data.results.trackmatches.track });
-      		  	console.log( this.state.results );
+      		  	
       		}.bind( this ),
 
       		error: function( xhr, status, err ) {
-      			console.log( status );
-      		  	console.error( this.props.url, status, err.toString() );
+      			
+      		  	
       		}.bind( this )
     	});
 
-		console.log( 'form sended', querySearch, this.props.url,  this.props.lastKey );
+		
 	},
 
 	render: function () {
@@ -118,7 +118,7 @@ var ListResults = React.createClass({
 
 	render: function () {
 
-		console.log( Object.keys( this.props.data ).length );
+		
 
 		if ( Object.keys( this.props.data ).length > 0 ) {
 			var searchResults = this.props.data.map( function( result, i ) {
